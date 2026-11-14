@@ -43,14 +43,14 @@ char *ft_itoa(int n)
     return(str);
 }
 
-int main(void)
-{
-    #include <stdio.h>
-    char    *str;
+// int main(void)
+// {
+//     #include <stdio.h>
+//     char    *str;
 
-    str = ft_itoa(-5232);
-    printf("%s\n", "resultat  :");
-    printf("%s", str);
-    free (str);
-    return 0;
-}
+//     str = ft_itoa(-5232);
+//     printf("%s\n", "resultat  :");
+//     printf("%s", str);
+//     free (str);
+//     return 0;
+// }
