@@ -1,47 +1,39 @@
-#include <stdlib.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/11/12 11:34:37 by ltalpain          #+#    #+#             */
+/*   Updated: 2026/11/12 11:39:13 by ltalpain         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int ft_strlen(char const *str)
+#include "libft.h"
+
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-    int i;
+	char	*str;
+	int		i;
+	int		y;
 
-    i = 0;
-    while (str[i])
-        i++;
-    return (i);
-}
-
-char *ft_strjoin(char const *s1, char const *s2)
-{
-    char    *str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-    if (str == NULL)
-        return (NULL);
-    int i;
-    int y;
-
-    i = 0;
-    y = 0;
-    while (s1[i])
-    {
-        str[i] = s1[i];
-        i++;
-    }
-    while (s2[y])
-    {
-        str[i] = s2[y];
-        i++;
-        y++;
-    }
-    return (str);
-    
-}
-
-int main(void)
-{
-    #include <stdio.h>
-    char    *str;
-
-    str = ft_strjoin("coucou je m'appelle ", "Luka");
-    printf("%s\n", str);
-    free (str);
-    return 0;
+	str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (str == NULL)
+		return (NULL);
+	i = 0;
+	y = 0;
+	while (s1[i])
+	{
+		str[i] = s1[i];
+		i++;
+	}
+	while (s2[y])
+	{
+		str[i] = s2[y];
+		i++;
+		y++;
+	}
+	str[ft_strlen(s1) + ft_strlen(s2)] = '\0';
+	return (str);
 }

@@ -1,69 +1,69 @@
-#include <stdlib.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/11/12 11:40:59 by ltalpain          #+#    #+#             */
+/*   Updated: 2026/11/16 09:30:02 by ltalpain         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int ft_strlen(char const *str)
+#include "libft.h"
+
+ 
+static int	ft_isset(char c, char const *set)
 {
-    int i;
-
-    i = 0;
-    while (str[i])
-        i++;
-    return (i);
+	size_t	i;
+ 
+	i = 0;
+	while (set[i])
+	{
+		if (c == set[i])
+			return (1);
+		i++;
+	}
+	return (0);
 }
-
-char *ft_strtrim(char const *s1, char const *set)
+ 
+static size_t	ft_rmstart(char const *s1, char const *set)
 {
-    int i;
-    int y;
-    int x;
-    int cnt;
-
-    i = 0;
-    y = 0;
-    cnt = 0;
-    while(s1[i])
-    {
-        y = 0;
-        while (set[y])
-        {
-            if (s1[i] == set[y])
-            {
-                cnt++;
-            }
-            y++;
-        }
-        i++;
-    }
-    char    *str = malloc(ft_strlen(s1) - cnt + 1);
-    if (str == NULL)
-        return (NULL);
-    i = 0;
-    x = 0;
-    while (s1[i])
-    {
-        cnt = 0;
-        y = 0;
-        while (set[y])
-        {
-            if (s1[i] == set[y])
-                cnt = 1;
-            y++;
-        }
-        if (cnt == 0)
-        {
-            str[x] = s1[i];
-            x++;
-        }
-        i++;
-    }
-    return (str);
+	size_t	i;
+ 
+	i = 0;
+	while (s1[i] && ft_isset(s1[i], set) == 1)
+		i++;
+	return (i);
 }
-
-int main(void)
+ 
+static size_t	ft_rmend(char const *s1, char const *set)
 {
-    #include <stdio.h>
-    char    *str;
-    str = ft_strtrim("Couxcou luvkavx", "x v");
-    printf("%s", str);
-    free (str);
-    return 0;
+	size_t	cnt;
+	size_t	i;
+ 
+	cnt = 0;
+	i = ft_strlen(s1);
+	while (i > 0 && ft_isset(s1[i - 1], set) == 1)
+	{
+		cnt++;
+		i--;
+	}
+	return (cnt);
+}
+ 
+char	*ft_strtrim(char const *s1, char const *set)
+{
+	size_t	len;
+	size_t	start;
+	size_t	end;
+ 
+	if (!s1 || !set)
+		return (NULL);
+	len = ft_strlen(s1);
+	start = ft_rmstart(s1, set);
+	if (start == len)
+		return (ft_substr(s1, 0, 0));
+	end = ft_rmend(s1, set);
+	return (ft_substr(s1, start, len - start - end));
 }

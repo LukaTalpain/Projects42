@@ -1,30 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/11/12 11:31:14 by ltalpain          #+#    #+#             */
+/*   Updated: 2026/11/12 11:32:30 by ltalpain         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
 #include <stdlib.h>
 
-char *ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-    int size;
-    int i;
+	char	*sub;
+	size_t	s_len;
+	size_t	i;
 
-    size = len - start;
-    i = 0;
-    char *str = malloc(size + 1);
-    if (str == NULL)
-        return (NULL);
-    if (s == NULL)
-        return (NULL);
-    while (start <= len)
-    {
-        str[i] = s[start];
-        start++;
-        i++;
-    }
-    return (str);    
-}
-
-int main(void)
-{
-    #include <stdio.h>
-    char *str = ft_substr("Hello, World!", 7, 12);
-    printf("%s\n", str);
-    free(str);
+	if (!s)
+		return (NULL);
+	s_len = ft_strlen(s);
+	if (start >= s_len)
+		len = 0;
+	else if (len > s_len - start)
+		len = s_len - start;
+	sub = malloc(len + 1);
+	if (!sub)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		sub[i] = s[start + i];
+		i++;
+	}
+	sub[i] = '\0';
+	return (sub);
 }

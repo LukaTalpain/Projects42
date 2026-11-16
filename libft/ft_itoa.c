@@ -1,10 +1,12 @@
 #include <stdlib.h>
 
-static int ft_unitcounter(int n)
+static int ft_unitcounter(long int n)
 {
     int cnt;
 
     cnt = 0;
+    if (n == 0)
+        return (1);
     if (n < 0)
     {
         cnt++;
@@ -22,22 +24,29 @@ char *ft_itoa(int n)
 {
     char    *str;
     int size;
+    long int    nb;
 
-    size = ft_unitcounter(n);
+    nb = n;
+    size = ft_unitcounter(nb);
     str = malloc (sizeof(char) * (size + 1));
     if (str == NULL)
         return (NULL);
     str[size] = '\0';
-    if (n < 0)
+    if (nb == 0)
+    {
+        str[0] = '0';
+        return (str);
+    }
+    if (nb < 0)
     {
         str[0] = '-';
-        n = n * (-1);
+        nb = nb * (-1);
     }
     size--;
-    while (n >= 1 )
+    while (nb >= 1 )
     {
-        str[size] = (n % 10) + '0';
-        n = n/10;
+        str[size] = (nb % 10) + '0';
+        nb = nb/10;
         size--;
     }
     return(str);

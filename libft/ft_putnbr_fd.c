@@ -1,5 +1,4 @@
 #include <unistd.h>
-#include <fcntl.h>
 
 static void ft_recursive(long int n, int fd)
 {
@@ -29,11 +28,11 @@ void ft_putnbr_fd(int n, int fd)
         ft_recursive(nbr, fd);
 }
 
-int main(void)
-{
-    int fd;
+// int main(void)
+// {
+//     int fd;
 
-    fd = open("test.txt", O_WRONLY);
-    ft_putnbr_fd( -1387, fd);
-    return 0;
-}
+//     fd = open("test.txt", O_WRONLY);
+//     ft_putnbr_fd( -1387, fd);
+//     return 0;
+// }
