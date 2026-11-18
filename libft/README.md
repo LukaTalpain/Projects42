@@ -173,12 +173,8 @@ typedef struct s_list
 
 ### References
 
-- [The C standard (C11 draft N1570)](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1570.pdf)
-- [Linux man pages](https://man7.org/linux/man-pages/) — `string(3)`, `ctype(3)`, `malloc(3)`, `write(2)`, `ar(1)`
-- [cppreference — C library](https://en.cppreference.com/w/c)
-- [GNU Make manual](https://www.gnu.org/software/make/manual/) — pattern rules, automatic variables, `.PHONY`
-- [GCC preprocessor options](https://gcc.gnu.org/onlinedocs/gcc/Preprocessor-Options.html) — `-MMD`, `-MP`
-- [Beej's Guide to C Programming](https://beej.us/guide/bgc/)
+- [The C standard (C11 draft N1570)]
+- [man pages] — `string(3)`, `ctype(3)`, `malloc(3)`, `write(2)`, `ar(1)`
 
 ### Use of AI
 
