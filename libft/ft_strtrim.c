@@ -6,17 +6,16 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/12 11:40:59 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/16 09:30:02 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/18 09:25:56 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
- 
 static int	ft_isset(char c, char const *set)
 {
 	size_t	i;
- 
+
 	i = 0;
 	while (set[i])
 	{
@@ -26,22 +25,22 @@ static int	ft_isset(char c, char const *set)
 	}
 	return (0);
 }
- 
+
 static size_t	ft_rmstart(char const *s1, char const *set)
 {
 	size_t	i;
- 
+
 	i = 0;
 	while (s1[i] && ft_isset(s1[i], set) == 1)
 		i++;
 	return (i);
 }
- 
+
 static size_t	ft_rmend(char const *s1, char const *set)
 {
 	size_t	cnt;
 	size_t	i;
- 
+
 	cnt = 0;
 	i = ft_strlen(s1);
 	while (i > 0 && ft_isset(s1[i - 1], set) == 1)
@@ -51,13 +50,13 @@ static size_t	ft_rmend(char const *s1, char const *set)
 	}
 	return (cnt);
 }
- 
+
 char	*ft_strtrim(char const *s1, char const *set)
 {
 	size_t	len;
 	size_t	start;
 	size_t	end;
- 
+
 	if (!s1 || !set)
 		return (NULL);
 	len = ft_strlen(s1);

@@ -1,65 +1,70 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/11/18 09:38:28 by ltalpain          #+#    #+#             */
+/*   Updated: 2026/11/18 09:43:36 by ltalpain         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 
-static int ft_unitcounter(long int n)
+static int	ft_unitcounter(long int n)
 {
-    int cnt;
+	int	cnt;
 
-    cnt = 0;
-    if (n == 0)
-        return (1);
-    if (n < 0)
-    {
-        cnt++;
-        n = n * (-1);
-    }
-    while (n >= 1)
-    {
-        n = n/10;
-        cnt++;
-    }
-    return (cnt);
+	cnt = 0;
+	if (n == 0)
+		return (1);
+	if (n < 0)
+	{
+		cnt++;
+		n = n * (-1);
+	}
+	while (n >= 1)
+	{
+		n = n / 10;
+		cnt++;
+	}
+	return (cnt);
 }
 
-char *ft_itoa(int n)
+static void	ft_write(long int nb, int size, char *str)
 {
-    char    *str;
-    int size;
-    long int    nb;
-
-    nb = n;
-    size = ft_unitcounter(nb);
-    str = malloc (sizeof(char) * (size + 1));
-    if (str == NULL)
-        return (NULL);
-    str[size] = '\0';
-    if (nb == 0)
-    {
-        str[0] = '0';
-        return (str);
-    }
-    if (nb < 0)
-    {
-        str[0] = '-';
-        nb = nb * (-1);
-    }
-    size--;
-    while (nb >= 1 )
-    {
-        str[size] = (nb % 10) + '0';
-        nb = nb/10;
-        size--;
-    }
-    return(str);
+	if (nb < 0)
+	{
+		str[0] = '-';
+		nb = nb * (-1);
+	}
+	size--;
+	while (nb >= 1)
+	{
+		str[size] = (nb % 10) + '0';
+		nb = nb / 10;
+		size--;
+	}
 }
 
-// int main(void)
-// {
-//     #include <stdio.h>
-//     char    *str;
+char	*ft_itoa(int n)
+{
+	char		*str;
+	int			size;
+	long int	nb;
 
-//     str = ft_itoa(-5232);
-//     printf("%s\n", "resultat  :");
-//     printf("%s", str);
-//     free (str);
-//     return 0;
-// }
+	nb = n;
+	size = ft_unitcounter(nb);
+	str = malloc(sizeof(char) * (size + 1));
+	if (str == NULL)
+		return (NULL);
+	str[size] = '\0';
+	if (nb == 0)
+	{
+		str[0] = '0';
+		return (str);
+	}
+	ft_write(nb, size, str);
+	return (str);
+}

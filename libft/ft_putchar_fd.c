@@ -1,15 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/11/18 09:30:06 by ltalpain          #+#    #+#             */
+/*   Updated: 2026/11/18 09:30:08 by ltalpain         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
 
-void ft_putchar_fd(char c, int fd)
+void	ft_putchar_fd(char c, int fd)
 {
-    write(fd , &c, 1);
+	write(fd, &c, 1);
 }
-
-// int main(void)
-// {
-//     int fd;
-
-//     fd = open("test.txt", O_WRONLY);
-//     ft_putchar_fd('a', fd);
-//     return 0;
-// }

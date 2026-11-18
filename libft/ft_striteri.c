@@ -1,29 +1,23 @@
-// void    ft_test(unsigned int i, char *c)
-// {
-//     if (i == 0)
-//     {
-//         c[i] = 'L';
-//     }
-// }
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/11/18 09:28:15 by ltalpain          #+#    #+#             */
+/*   Updated: 2026/11/18 09:28:28 by ltalpain         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void ft_striteri(char *s, void (*f)(unsigned int,char*))
+void	ft_striteri(char *s, void (*f)(unsigned int, char *))
 {
-    unsigned int i;
+	unsigned int	i;
 
-    i = 0;
-    while (s[i])
-    {
-        f(i, &s[i]);
-        i++;
-    }
+	i = 0;
+	while (s[i])
+	{
+		f(i, &s[i]);
+		i++;
+	}
 }
-
-// int main(void)
-// {
-//     #include <stdio.h>
-//     char    str[] = "Yuka";
-
-//     ft_striteri(str, ft_test);
-//     printf("%s", str);
-//     return 0;
-// }
