@@ -6,7 +6,7 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/03 10:54:56 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/09 16:27:12 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/18 10:26:06 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,3 @@ int	ft_isalpha(int c)
 	}
 	return (0);
 }
-
-// int main(void)
-// {
-//     #include <stdio.h>
-
-//     char    letter = '1';
-
-//     printf ("%d", ft_isalpha(letter));
-// }

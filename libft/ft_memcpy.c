@@ -6,11 +6,11 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/04 09:46:55 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/12 09:59:50 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/18 10:29:13 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
+#include "libft.h"
 
 void	*ft_memcpy(void *dest, const void *src, size_t n)
 {

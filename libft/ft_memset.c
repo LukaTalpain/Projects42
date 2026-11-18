@@ -6,11 +6,11 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/03 11:55:02 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/12 10:00:01 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/18 10:29:36 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
+#include "libft.h"
 
 void	*ft_memset(void *s, int c, size_t n)
 {

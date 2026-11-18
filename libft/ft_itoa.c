@@ -6,11 +6,11 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/18 09:38:28 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/18 09:43:36 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/18 10:27:57 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "libft.h"
 
 static int	ft_unitcounter(long int n)
 {

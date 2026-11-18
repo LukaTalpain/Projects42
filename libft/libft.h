@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: luka <luka@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/09 15:46:43 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/17 11:21:53 by luka             ###   ########.fr       */
+/*   Updated: 2026/11/18 10:25:50 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <string.h>
 #include <strings.h>
 #include <unistd.h>
+#include <stdint.h>
 
 typedef struct s_list
 {

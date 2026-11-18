@@ -6,11 +6,11 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/04 14:54:03 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/12 09:58:54 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/18 10:28:43 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
+#include "libft.h"
 
 void	*ft_memchr(const void *s, int c, size_t n)
 {

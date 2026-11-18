@@ -6,7 +6,7 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/03 10:55:00 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/09 16:01:44 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/18 10:27:35 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,3 @@ int	ft_isascii(int ascii)
 		return (1);
 	return (0);
 }
-
-// int main(void)
-// {
-//     #include <stdio.h>
-
-//     printf("%d", ft_isascii('a'));
-// }
