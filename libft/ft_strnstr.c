@@ -3,51 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
+/*   By: luka <luka@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/06 09:36:47 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/12 10:01:17 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/17 11:16:01 by luka             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <string.h>
 
-int	ft_islittle(const char *big, const char *little, int i)
+static int	ft_islittle(const char *big, const char *little, size_t len)
 {
 	if (*little == '\0')
 		return (1);
-	if (*big == *little && i > 0)
-	{
-		return (ft_islittle(big + 1, little + 1, i - 1));
-	}
-	else
+	if (*big == '\0' || len == 0)
 		return (0);
+	if (*big == *little)
+		return (ft_islittle(big + 1, little + 1, len - 1));
+	return (0);
 }
 
 char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
-	char	*ptr;
+	size_t	i;
 
-	ptr = (char *)big;
 	if (*little == '\0')
-		return (ptr);
-	while (len > 0)
+		return ((char *)big);
+	i = 0;
+	while (big[i] != '\0' && i < len)
 	{
-		if (ft_islittle(ptr, little, len) == 1)
-		{
-			return (ptr);
-		}
-		ptr = ptr + 1;
-		len--;
+		if (ft_islittle(big + i, little, len - i))
+			return ((char *)&big[i]);
+		i++;
 	}
-	return (0);
+	return (NULL);
 }
-
-// int main(void)
-// {
-//     #include <stdio.h>
-//     const char    s1[] = "je susuiss cool";
-//     const char    s2[] = "suis";
-
-//     printf("%s", ft_strnstr(s1, s2, 10));
-// }

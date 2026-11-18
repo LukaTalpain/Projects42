@@ -8,6 +8,18 @@
 #include <strings.h>
 #include <unistd.h>
 
+/* detection d'AddressSanitizer (gcc et clang) */
+#if defined(__SANITIZE_ADDRESS__)
+# define HAVE_ASAN 1
+#elif defined(__has_feature)
+# if __has_feature(address_sanitizer)
+#  define HAVE_ASAN 1
+# endif
+#endif
+#ifdef HAVE_ASAN
+# include <sanitizer/asan_interface.h>
+#endif
+
 #define BUF 32
 
 #include <limits.h>   /* pour UINT_MAX */
@@ -22,6 +34,10 @@ static int	g_fail = 0;
    ft_lstadd_back (necessite t_list dans libft.h). Mets 0 tant que ces
    fonctions ne sont pas ecrites. */
 #define TEST_LIST 1
+
+/* 1 = teste aussi ft_lstdelone, ft_lstclear, ft_lstiter, ft_lstmap.
+   Mets 0 tant que ces fonctions ne sont pas ecrites. */
+#define TEST_LIST2 1
 
 #if TEST_PART2
 # define OUT_SIZE 5200
@@ -862,7 +878,7 @@ static void	test_invalid_fd(void)
 
 #endif
 
-#if TEST_LIST
+#if TEST_LIST || TEST_LIST2
 
 /* ================================================================== */
 /* listes : les listes de test sont construites a la main (malloc),    */
@@ -1242,6 +1258,497 @@ static void	test_lst_mix(void)
 
 #endif
 
+#if TEST_LIST2
+
+/* ================================================================== */
+/* delone / clear / iter / map                                         */
+/* del et f sont des fonctions "espions" : elles comptent les appels   */
+/* et memorisent les pointeurs recus.                                  */
+/* La liberation des noeuds ne se voit que sous AddressSanitizer :     */
+/*   cc -g -fsanitize=address tester.c libft.a                         */
+/* Sans ASan, ces verifications sont ignorees (le reste est teste).    */
+/* ================================================================== */
+# define LOG_MAX 12000
+
+static size_t	g_del_calls = 0;
+static void		*g_del_seen[LOG_MAX];
+static size_t	g_f_calls = 0;
+static void		*g_f_seen[LOG_MAX];
+
+static void	del_reset(void)
+{
+	g_del_calls = 0;
+	g_f_calls = 0;
+}
+
+/* del espion : memorise le contenu recu, ne libere rien */
+static void	del_count(void *content)
+{
+	if (g_del_calls < LOG_MAX)
+		g_del_seen[g_del_calls] = content;
+	g_del_calls++;
+}
+
+/* del realiste : memorise puis libere le contenu (alloue par strdup) */
+static void	del_free(void *content)
+{
+	del_count(content);
+	free(content);
+}
+
+static size_t	seen_count(void *p)
+{
+	size_t	i;
+	size_t	n;
+
+	n = 0;
+	i = 0;
+	while (i < g_del_calls && i < LOG_MAX)
+	{
+		if (g_del_seen[i] == p)
+			n++;
+		i++;
+	}
+	return (n);
+}
+
+/* 1 = bloc libere, 0 = bloc vivant, -1 = inconnu (pas d'ASan) */
+static int	is_freed(void *p)
+{
+# ifdef HAVE_ASAN
+	return (__asan_address_is_poisoned(p) != 0);
+# else
+	(void)p;
+	return (-1);
+# endif
+}
+
+/* vrai si le bloc a bien l'etat attendu (ou si on ne peut pas savoir) */
+static int	freed_ok(void *p, int want_freed)
+{
+	int	f;
+
+	f = is_freed(p);
+	return (f == -1 || f == want_freed);
+}
+
+/* vrai si le bloc n'a pas ete libere (ou si on ne peut pas savoir) */
+static int	alive_ok(void *p)
+{
+	return (is_freed(p) != 1);
+}
+
+/* nettoyage d'un bloc qui DEVAIT etre libere : on ne le libere que si la
+   fonction testee l'a oublie (fuite), pour ne pas faire de double free */
+static void	free_leaked(void *p)
+{
+	if (p != NULL && is_freed(p) == 0)
+		free(p);
+}
+
+/* nettoyage d'un bloc qui devait RESTER vivant */
+static void	free_kept(void *p)
+{
+	if (p != NULL && is_freed(p) != 1)
+		free(p);
+}
+
+/* noeud alloue a la main, NON enregistre : c'est la fonction testee qui
+   doit le liberer */
+static t_list	*hmk(void *content, t_list *next)
+{
+	t_list	*n;
+
+	n = malloc(sizeof(t_list));
+	if (n == NULL)
+		exit(1);
+	n->content = content;
+	n->next = next;
+	return (n);
+}
+
+/* ------------------------------------------------------------------ */
+/* lstdelone                                                          */
+/* ------------------------------------------------------------------ */
+static void	test_lstdelone_middle(void)
+{
+	t_list	*a;
+	t_list	*b;
+	t_list	*c;
+	void	*ca;
+	void	*cb;
+	void	*cc;
+	int		ok;
+
+	ca = strdup("a");
+	cb = strdup("b");
+	cc = strdup("c");
+	c = hmk(cc, NULL);
+	b = hmk(cb, c);
+	a = hmk(ca, b);
+	del_reset();
+	ft_lstdelone(b, del_free);
+	ok = (g_del_calls == 1 && g_del_seen[0] == cb);
+	ok = (ok && freed_ok(b, 1) && freed_ok(cb, 1));
+	ok = (ok && alive_ok(c) && alive_ok(cc)
+			&& c->content == cc && c->next == NULL);
+	ok = (ok && alive_ok(a) && alive_ok(ca) && a->content == ca);
+	report("noeud du milieu : seul b est libere (a et c intacts)", ok);
+	if (!ok)
+		printf("     del appelee %zu fois (attendu 1)\n", g_del_calls);
+	free_leaked(b);
+	free_leaked(cb);
+	free_kept(a);
+	free_kept(ca);
+	free_kept(c);
+	free_kept(cc);
+}
+
+static void	test_lstdelone_single(void)
+{
+	t_list	*n;
+	void	*c;
+	int		ok;
+
+	c = strdup("x");
+	n = hmk(c, NULL);
+	del_reset();
+	ft_lstdelone(n, del_free);
+	ok = (g_del_calls == 1 && g_del_seen[0] == c && freed_ok(n, 1));
+	report("noeud seul : del appelee 1 fois avec le contenu, noeud libere", ok);
+	if (!ok)
+		printf("     del appelee %zu fois (attendu 1)\n", g_del_calls);
+	free_leaked(n);
+	free_leaked(c);
+}
+
+static void	test_lstdelone_free(void)
+{
+	t_list	*n;
+	void	*c;
+	int		ok;
+
+	c = strdup("x");
+	n = hmk(c, NULL);
+	ft_lstdelone(n, free);
+	ok = (freed_ok(n, 1) && freed_ok(c, 1));
+	report("del == free : contenu et noeud liberes", ok);
+	free_leaked(n);
+	free_leaked(c);
+}
+
+static void	test_lstdelone_null_content(void)
+{
+	t_list	*n;
+	int		ok;
+
+	n = hmk(NULL, NULL);
+	del_reset();
+	ft_lstdelone(n, del_count);
+	ok = freed_ok(n, 1);
+	report("content == NULL : pas de plantage, noeud libere", ok);
+	free_leaked(n);
+}
+
+/* ------------------------------------------------------------------ */
+/* lstclear                                                           */
+/* ------------------------------------------------------------------ */
+static void	test_lstclear_n(const char *name, size_t n)
+{
+	static t_list	*nodes[LOG_MAX];
+	static void		*conts[LOG_MAX];
+	t_list			*head;
+	size_t			i;
+	int				ok;
+
+	head = NULL;
+	i = n;
+	while (i > 0)
+	{
+		i--;
+		conts[i] = strdup("x");
+		head = hmk(conts[i], head);
+		nodes[i] = head;
+	}
+	del_reset();
+	ft_lstclear(&head, del_free);
+	ok = (head == NULL && g_del_calls == n);
+	i = 0;
+	while (i < n)
+	{
+		ok = (ok && seen_count(conts[i]) == 1 && freed_ok(nodes[i], 1));
+		i++;
+	}
+	if (head == NULL)
+		ft_lstclear(&head, del_free);
+	ok = (ok && head == NULL && g_del_calls == n);
+	report(name, ok);
+	if (!ok)
+		printf("     *lst=%p (attendu (nil)), del appelee %zu fois (attendu %zu)\n",
+			(void *)head, g_del_calls, n);
+	i = 0;
+	while (i < n)
+	{
+		free_leaked(nodes[i]);
+		free_leaked(conts[i]);
+		i++;
+	}
+}
+
+static void	test_lstclear_free(void)
+{
+	t_list	*nodes[3];
+	void	*conts[3];
+	t_list	*head;
+	size_t	i;
+	int		ok;
+
+	head = NULL;
+	i = 3;
+	while (i > 0)
+	{
+		i--;
+		conts[i] = strdup("x");
+		head = hmk(conts[i], head);
+		nodes[i] = head;
+	}
+	ft_lstclear(&head, free);
+	ok = (head == NULL);
+	i = 0;
+	while (i < 3)
+	{
+		ok = (ok && freed_ok(nodes[i], 1) && freed_ok(conts[i], 1));
+		i++;
+	}
+	report("del == free : tout est libere, *lst == NULL", ok);
+	i = 0;
+	while (i < 3)
+	{
+		free_leaked(nodes[i]);
+		free_leaked(conts[i]);
+		i++;
+	}
+}
+
+/* ------------------------------------------------------------------ */
+/* lstiter                                                            */
+/* ------------------------------------------------------------------ */
+static void	iter_upper(void *content)
+{
+	char	*s;
+
+	s = (char *)content;
+	while (*s)
+	{
+		*s = (char)toupper((unsigned char)*s);
+		s++;
+	}
+}
+
+static void	test_lstiter_upper(void)
+{
+	char	b1[] = "abc";
+	char	b2[] = "def";
+	char	b3[] = "ghi";
+	t_list	*n1;
+	t_list	*n2;
+	t_list	*n3;
+	int		ok;
+
+	n3 = mk(b3, NULL);
+	n2 = mk(b2, n3);
+	n1 = mk(b1, n2);
+	ft_lstiter(n1, iter_upper);
+	ok = (strcmp(b1, "ABC") == 0 && strcmp(b2, "DEF") == 0
+			&& strcmp(b3, "GHI") == 0);
+	ok = (ok && n1->next == n2 && n2->next == n3 && n3->next == NULL
+			&& n1->content == b1 && n2->content == b2 && n3->content == b3);
+	report("f modifie les contenus en place, liste intacte", ok);
+	if (!ok)
+		printf("     contenus : \"%s\" \"%s\" \"%s\"\n", b1, b2, b3);
+	free_all_nodes();
+}
+
+/* f doit recevoir le CONTENU (pas le noeud), dans l'ordre, une fois chacun */
+static void	test_lstiter_order(const char *name, size_t n)
+{
+	static char	pool[LOG_MAX];
+	t_list		*head;
+	size_t		i;
+	int			ok;
+
+	head = NULL;
+	i = n;
+	while (i > 0)
+	{
+		i--;
+		head = mk(&pool[i], head);
+	}
+	del_reset();
+	ft_lstiter(head, del_count);
+	ok = (g_del_calls == n);
+	i = 0;
+	while (ok && i < n)
+	{
+		ok = (g_del_seen[i] == &pool[i]);
+		i++;
+	}
+	report(name, ok);
+	if (!ok)
+		printf("     f appelee %zu fois (attendu %zu), ou mauvais pointeur/ordre\n",
+			g_del_calls, n);
+	free_all_nodes();
+}
+
+/* ------------------------------------------------------------------ */
+/* lstmap                                                             */
+/* ------------------------------------------------------------------ */
+static void	*lmap_upper(void *content)
+{
+	char	*s;
+	size_t	i;
+
+	if (g_f_calls < LOG_MAX)
+		g_f_seen[g_f_calls] = content;
+	g_f_calls++;
+	s = strdup((char *)content);
+	i = 0;
+	while (s[i])
+	{
+		s[i] = (char)toupper((unsigned char)s[i]);
+		i++;
+	}
+	return (s);
+}
+
+static void	*lmap_ident(void *content)
+{
+	if (g_f_calls < LOG_MAX)
+		g_f_seen[g_f_calls] = content;
+	g_f_calls++;
+	return (content);
+}
+
+/* libere une liste produite par lstmap (noeuds + contenus alloues par f) */
+static void	free_mapped(t_list *l, int free_contents)
+{
+	t_list	*next;
+
+	while (l)
+	{
+		next = l->next;
+		if (free_contents)
+			free(l->content);
+		free(l);
+		l = next;
+	}
+}
+
+/* f = lmap_upper : f alloue le nouveau contenu (copie en majuscules) */
+static void	test_lstmap(const char *name, const char **items, const char **exp)
+{
+	t_list	*head;
+	t_list	*ret;
+	t_list	*r;
+	t_list	*o;
+	size_t	n;
+	size_t	i;
+	int		ok;
+
+	head = mk_list(items);
+	n = 0;
+	while (items[n])
+		n++;
+	del_reset();
+	ret = ft_lstmap(head, lmap_upper, del_free);
+	ok = (g_f_calls == n && g_del_calls == 0 && list_matches(ret, exp));
+	ok = (ok && list_matches(head, items) && (n == 0 || ret != head));
+	i = 0;
+	while (ok && i < n)
+	{
+		ok = (g_f_seen[i] == (void *)items[i]);
+		i++;
+	}
+	r = ret;
+	o = head;
+	while (ok && r && o)
+	{
+		ok = (r != o);
+		r = r->next;
+		o = o->next;
+	}
+	report(name, ok);
+	if (!ok)
+	{
+		printf("     f appelee %zu fois (attendu %zu), del appelee %zu fois\n",
+			g_f_calls, n, g_del_calls);
+		print_list(ret);
+	}
+	else
+		free_mapped(ret, 1);
+	free_all_nodes();
+}
+
+/* f = identite : nouveaux noeuds, mais memes contenus */
+static void	test_lstmap_ident(void)
+{
+	t_list	*head;
+	t_list	*ret;
+	t_list	*r;
+	t_list	*o;
+	int		ok;
+
+	head = mk_list((const char *[]){"a", "b", "c", NULL});
+	del_reset();
+	ret = ft_lstmap(head, lmap_ident, del_free);
+	ok = (g_f_calls == 3 && g_del_calls == 0 && ret != head
+			&& list_matches(ret, (const char *[]){"a", "b", "c", NULL}));
+	r = ret;
+	o = head;
+	while (ok && r && o)
+	{
+		ok = (r != o && r->content == o->content);
+		r = r->next;
+		o = o->next;
+	}
+	report("f = identite : nouveaux noeuds, memes contenus", ok);
+	if (ok)
+		free_mapped(ret, 0);
+	free_all_nodes();
+}
+
+static void	test_lstmap_big(const char *name, size_t count)
+{
+	t_list	*head;
+	t_list	*ret;
+	size_t	i;
+	int		ok;
+
+	head = NULL;
+	i = 0;
+	while (i < count)
+	{
+		head = mk("x", head);
+		i++;
+	}
+	del_reset();
+	ret = ft_lstmap(head, lmap_upper, del_free);
+	ok = (g_f_calls == count && g_del_calls == 0 && ret != head
+			&& count_nodes(ret) == count && count_nodes(head) == count
+			&& strcmp((char *)head->content, "x") == 0);
+	ok = (ok && last_node(ret)->content != NULL
+			&& strcmp((char *)last_node(ret)->content, "X") == 0);
+	report(name, ok);
+	if (!ok)
+		printf("     %zu noeud(s) (attendu %zu), f appelee %zu fois\n",
+			count_nodes(ret), count, g_f_calls);
+	else
+		free_mapped(ret, 1);
+	free_all_nodes();
+}
+
+#endif
+
 /* ================================================================== */
 int	main(void)
 {
@@ -1250,6 +1757,7 @@ int	main(void)
 	const unsigned char	bin[] = {1, 2, 0, 3, 0xff, 5};
 	const char			bin_cpy[] = "ab\0cd\0ef";
 
+	setvbuf(stdout, NULL, _IOLBF, 0);
 	memset(big, 'Q', BUF);
 	memset(long_str, 'A', 4000);
 	long_str[4000] = '\0';
@@ -1697,6 +2205,48 @@ int	main(void)
 		(const char *[]){"b", "c", "d", NULL}, (const char *[]){"a", "b", "c", "d", NULL});
 	test_add_back_many("1000 ajouts a la fin", 1000);
 	test_lst_mix();
+#endif
+
+#if TEST_LIST2
+# ifdef HAVE_ASAN
+	printf("\n(ASan actif : la liberation des noeuds est verifiee)\n");
+# else
+	printf("\n(sans ASan : la liberation des noeuds n'est PAS verifiee,\n"
+		" compile avec -g -fsanitize=address pour la verifier)\n");
+# endif
+
+	section("lstdelone");
+	test_lstdelone_middle();
+	test_lstdelone_single();
+	test_lstdelone_free();
+	test_lstdelone_null_content();
+
+	section("lstclear");
+	test_lstclear_n("liste vide (*lst == NULL)", 0);
+	test_lstclear_n("1 noeud", 1);
+	test_lstclear_n("3 noeuds", 3);
+	test_lstclear_n("1000 noeuds", 1000);
+	test_lstclear_free();
+
+	section("lstiter");
+	test_lstiter_upper();
+	test_lstiter_order("liste vide (NULL) : f jamais appelee", 0);
+	test_lstiter_order("1 noeud", 1);
+	test_lstiter_order("5 noeuds : contenu recu, dans l'ordre", 5);
+	test_lstiter_order("10000 noeuds", 10000);
+
+	section("lstmap");
+	test_lstmap("liste vide (retourne NULL)", (const char *[]){NULL},
+		(const char *[]){NULL});
+	test_lstmap("1 noeud", (const char *[]){"a", NULL},
+		(const char *[]){"A", NULL});
+	test_lstmap("3 noeuds", (const char *[]){"abc", "def", "ghi", NULL},
+		(const char *[]){"ABC", "DEF", "GHI", NULL});
+	test_lstmap("5 noeuds, ordre conserve",
+		(const char *[]){"a", "b", "c", "d", "e", NULL},
+		(const char *[]){"A", "B", "C", "D", "E", NULL});
+	test_lstmap_ident();
+	test_lstmap_big("1000 noeuds", 1000);
 #endif
 
 	printf("\n%s (%d echec%s)\n",
