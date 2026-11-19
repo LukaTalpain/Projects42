@@ -6,7 +6,7 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/12 09:57:58 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/18 09:44:02 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/19 17:21:50 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_atoi(const char *arg)
 	i = 0;
 	negative = 0;
 	nb = 0;
-	while (arg[i] == ' ' || (arg[i] >= '\a' && arg[i] <= '\r'))
+	while (arg[i] == ' ' || (arg[i] >= '\t' && arg[i] <= '\r'))
 		i++;
 	if (arg[i] == '-' || arg[i] == '+')
 	{
