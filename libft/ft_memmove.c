@@ -6,13 +6,14 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/04 09:46:42 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/19 17:14:41 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/23 11:42:54 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static unsigned char	*ft_geta(unsigned char *a, const unsigned char *b, size_t n)
+static unsigned char	*ft_geta(unsigned char *a, const unsigned char *b,
+		size_t n)
 {
 	size_t	i;
 
