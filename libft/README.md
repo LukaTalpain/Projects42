@@ -153,7 +153,7 @@ typedef struct s_list
 |---|---|
 | `t_list *ft_lstnew(void *content)` | Allocates a new node holding `content` (the pointer is stored, not copied), with `next` set to `NULL`. |
 | `void ft_lstadd_front(t_list **lst, t_list *new)` | Adds the node `new` at the beginning of the list. |
-| `int ft_lstsize(t_list *lst)` | Counts the number of nodes in the list. |
+| `unsigned int ft_lstsize(t_list *lst)` | Counts the number of nodes in the list. |
 | `t_list *ft_lstlast(t_list *lst)` | Returns the last node of the list (`NULL` for an empty list). |
 | `void ft_lstadd_back(t_list **lst, t_list *new)` | Adds the node `new` at the end of the list. Works on an empty list. |
 | `void ft_lstdelone(t_list *lst, void (*del)(void *))` | Frees the content of the node with `del`, then frees the node itself (not the following nodes). |
