@@ -6,13 +6,11 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/12 09:55:00 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/12 10:53:20 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/24 11:19:20 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 static size_t	count_words(const char *s, char c)
 {

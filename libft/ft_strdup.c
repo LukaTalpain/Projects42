@@ -6,7 +6,7 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/12 10:00:18 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/19 17:14:44 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/24 11:22:48 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 char	*ft_strdup(const char *s)
 {
 	char	*str;
-	int		s_lenght;
+	int		s_length;
 	int		i;
 
-	s_lenght = ft_strlen(s);
-	str = malloc(s_lenght + 1);
+	s_length = ft_strlen(s);
+	str = malloc(s_length + 1);
 	if (str == NULL)
 		return (NULL);
 	i = 0;
-	while (i < s_lenght)
+	while (i < s_length)
 	{
 		str[i] = s[i];
 		i++;

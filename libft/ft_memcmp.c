@@ -6,7 +6,7 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/04 15:00:28 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/18 10:28:58 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/24 11:21:45 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,3 @@ int	ft_memcmp(const void *s1, const void *s2, size_t n)
 	}
 	return (str1[i] - str2[i]);
 }
-
-// int main(void)
-// {
-//     #include <stdio.h>
-//     char    s1[] = "coob";
-//     char    s2[] = "cooa";
-
-//     printf("%d", ft_memcmp(s1, s2, 2));
-// }

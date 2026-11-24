@@ -6,7 +6,7 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/03 11:37:50 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/09 15:59:55 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/24 11:19:58 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,3 @@ size_t	ft_strlen(const char *s)
 	}
 	return (i);
 }
-
-// int main(void)
-// {
-//     #include <stdio.h>
-
-//     printf("%d",ft_strlen("Luka"));
-// }

@@ -6,7 +6,7 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/04 14:44:52 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/12 10:01:11 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/24 11:21:31 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,3 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	}
 	return (a[i] - b[i]);
 }
-
-// int main(void)
-// {
-//     #include <stdio.h>
-//     char    s1[] = "coob";
-//     char    s2[] = "cooa";
-
-//     printf("%d", ft_strncmp(s1, s2));
-// }

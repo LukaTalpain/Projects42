@@ -6,7 +6,7 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/04 09:46:42 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/23 11:42:54 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/24 11:20:29 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,3 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 		return (dest);
 	return (ft_geta(a, b, n));
 }
-
-// int main(void)
-// {
-//     #include <stdio.h>
-//     char buf[] = "abcdef";
-//     ft_memmove(buf + 2, buf, 4);
-//     printf("%s", buf);
-// }

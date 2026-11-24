@@ -6,7 +6,7 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/04 14:31:07 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/10 10:01:09 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/24 11:21:12 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,3 @@ char	*ft_strchr(const char *str, int find)
 		return ((char *)(str + i));
 	return (0);
 }
-
-// int main(void)
-// {
-//     #include <stdio.h>
-
-//     char    str[] = "je suis cool";
-
-//     printf("%s", ft_strchr(str, 'c'));
-// }

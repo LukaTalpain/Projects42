@@ -6,7 +6,7 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/04 14:54:03 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/18 10:28:43 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/24 11:21:41 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,3 @@ void	*ft_memchr(const void *s, int c, size_t n)
 	}
 	return (0);
 }
-
-// int main(void)
-// {
-//     #include <stdio.h>
-
-//     unsigned char str[] = "test cool cool";
-
-//     printf("%s", ft_memchr(str, 'c', 15));
-// }
