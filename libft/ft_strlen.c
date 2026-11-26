@@ -6,11 +6,11 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/03 11:37:50 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/24 11:19:58 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/26 11:32:11 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
+#include "libft.h"
 
 size_t	ft_strlen(const char *s)
 {
