@@ -6,9 +6,11 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/04 14:37:52 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/24 11:21:00 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/26 11:08:37 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 char	*ft_strrchr(const char *str, int find)
 {

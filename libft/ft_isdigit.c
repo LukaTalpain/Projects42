@@ -6,9 +6,11 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/03 10:55:16 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/18 10:27:40 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/26 11:02:56 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 int	ft_isdigit(int nbr)
 {

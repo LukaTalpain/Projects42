@@ -6,34 +6,38 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/12 10:00:29 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/24 11:51:14 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/26 11:07:16 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlcat(char *dst, const char *src, size_t size)
+static size_t	ft_dstlen(const char *dst, size_t size)
 {
-	int		i;
-	size_t	originalsize;
-	size_t	space;
+	size_t	i;
 
 	i = 0;
-	if (size == 0)
-		return (ft_strlen(src));
-	originalsize = ft_strlen(dst);
-	if (size <= originalsize)
-		space = 0;
-	else
-		space = size - originalsize - 1;
-	if (size < originalsize)
-		return (size + ft_strlen(src));
-	while (space > 0 && src[i])
-	{
-		dst[originalsize + i] = src[i];
+	while (i < size && dst[i])
 		i++;
-		space--;
+	return (i);
+}
+
+size_t	ft_strlcat(char *dst, const char *src, size_t size)
+{
+	size_t	i;
+	size_t	dst_len;
+	size_t	src_len;
+
+	src_len = ft_strlen(src);
+	dst_len = ft_dstlen(dst, size);
+	if (dst_len == size)
+		return (size + src_len);
+	i = 0;
+	while (src[i] && dst_len + i < size - 1)
+	{
+		dst[dst_len + i] = src[i];
+		i++;
 	}
-	dst[originalsize + i] = '\0';
-	return (originalsize + ft_strlen(src));
+	dst[dst_len + i] = '\0';
+	return (dst_len + src_len);
 }

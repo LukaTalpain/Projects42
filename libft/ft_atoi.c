@@ -6,9 +6,11 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/12 09:57:58 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/19 17:21:50 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/26 10:58:20 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 int	ft_atoi(const char *arg)
 {

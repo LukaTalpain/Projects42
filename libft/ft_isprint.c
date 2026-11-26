@@ -6,9 +6,11 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/03 11:28:08 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/18 10:27:45 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/26 11:03:02 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 int	ft_isprint(int print)
 {

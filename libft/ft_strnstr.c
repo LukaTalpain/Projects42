@@ -6,17 +6,17 @@
 /*   By: ltalpain <ltalpain@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/06 09:36:47 by ltalpain          #+#    #+#             */
-/*   Updated: 2026/11/18 09:26:36 by ltalpain         ###   ########.fr       */
+/*   Updated: 2026/11/26 11:10:02 by ltalpain         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
+#include "libft.h"
 
 static int	ft_islittle(const char *big, const char *little, size_t len)
 {
 	if (*little == '\0')
 		return (1);
-	if (*big == '\0' || len == 0)
+	if (len == 0 || *big == '\0' )
 		return (0);
 	if (*big == *little)
 		return (ft_islittle(big + 1, little + 1, len - 1));
@@ -29,8 +29,10 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 
 	if (*little == '\0')
 		return ((char *)big);
+	if (big == NULL)
+		return (NULL);
 	i = 0;
-	while (big[i] != '\0' && i < len)
+	while (i < len && big[i] != '\0')
 	{
 		if (ft_islittle(big + i, little, len - i))
 			return ((char *)&big[i]);
